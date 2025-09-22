@@ -15,6 +15,9 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -52,6 +55,22 @@ class VetController {
 
 	}
 
+	// OWASP A03: Injection DEMO
+	// Allows direct SQL injection via user input (for demonstration)
+	@GetMapping("/vets/injection")
+	@ResponseBody
+	public String injection(@RequestParam String id) throws Exception {
+		// DO NOT USE: Unsafe SQL, for demo only!
+		Connection conn = java.sql.DriverManager.getConnection("jdbc:h2:mem:testdb");
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM vets WHERE id = " + id);
+		StringBuilder sb = new StringBuilder();
+		while (rs.next()) {
+			sb.append(rs.getString("first_name")).append(" ").append(rs.getString("last_name")).append("\n");
+		}
+		return sb.toString();
+	}
+
 	private String addPaginationModel(int page, Page<Vet> paginated, Model model) {
 		List<Vet> listVets = paginated.getContent();
 		model.addAttribute("currentPage", page);
@@ -74,6 +93,22 @@ class VetController {
 		Vets vets = new Vets();
 		vets.getVetList().addAll(this.vetRepository.findAll());
 		return vets;
+	}
+
+	// OWASP A09: Security Logging and Monitoring Failures DEMO
+	// No logging for failed access or errors (purposefully silent)
+	// This endpoint purposefully does not log access or errors, even on exception.
+	@GetMapping("/vets/nolog")
+	@ResponseBody
+	public String nolog() {
+		try {
+			int x = 1 / 0;
+			return "OK";
+		}
+		catch (Exception e) {
+			// No logging!
+			return "fail";
+		}
 	}
 
 }

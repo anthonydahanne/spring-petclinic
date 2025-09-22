@@ -25,12 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -155,6 +150,64 @@ class OwnerController {
 		Owner owner = this.owners.findById(ownerId);
 		mav.addObject(owner);
 		return mav;
+	}
+
+	// OWASP A05: Security Misconfiguration DEMO
+	// Hardcoded credentials (for demo only)
+	@GetMapping("/owners/hardcoded")
+	@ResponseBody
+	public String hardcoded() {
+		// DO NOT USE: Demo only
+		String secret = "admin:password123";
+		return secret;
+	}
+
+	// OWASP A02: Cryptographic Failures DEMO
+	// Insecure cryptography: storing plain text password (for demo only)
+	@PostMapping("/owners/insecure-crypto")
+	@ResponseBody
+	public String insecureCrypto(@RequestParam String password) throws Exception {
+		// DO NOT USE: Demo only
+		java.nio.file.Files.write(java.nio.file.Paths.get("password.txt"), password.getBytes());
+		return "Stored password insecurely";
+	}
+
+	// OWASP A04: Insecure Design DEMO
+	// No CSRF protection, and exposes sensitive owner info
+	@PostMapping("/owners/insecure-design")
+	@ResponseBody
+	public String insecureDesign(@RequestParam int ownerId) {
+		Owner owner = this.owners.findById(ownerId);
+		return "Owner info: " + owner.toString();
+	}
+
+	// OWASP A01: Broken Access Control DEMO
+	// No authentication or authorization check for admin-only action
+	@GetMapping("/owners/delete")
+	@ResponseBody
+	public String deleteOwner(@RequestParam int ownerId) {
+		this.owners.deleteById(ownerId); // Anyone can delete!
+		return "Deleted owner id " + ownerId;
+	}
+
+	// OWASP A07: Identification and Authentication Failures DEMO
+	// No authentication check, allows anyone to update owner
+	@PostMapping("/owners/{ownerId}/open-edit")
+	@ResponseBody
+	public String openEdit(@PathVariable("ownerId") int ownerId, @RequestParam String address) {
+		Owner owner = this.owners.findById(ownerId);
+		owner.setAddress(address);
+		this.owners.save(owner);
+		return "Owner address updated without authentication!";
+	}
+
+	// OWASP A06: Vulnerable and Outdated Components DEMO
+	// Exposes the Java version and Spring version in the response
+	@GetMapping("/owners/version")
+	@ResponseBody
+	public String version() {
+		return "Java version: " + System.getProperty("java.version") + ", Spring version: "
+				+ org.springframework.core.SpringVersion.getVersion();
 	}
 
 }

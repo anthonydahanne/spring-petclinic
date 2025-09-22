@@ -22,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.util.Collection;
 
 /**
@@ -54,5 +56,13 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Transactional(readOnly = true)
 	@Cacheable("vets")
 	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
+
+	// OWASP A08: Software and Data Integrity Failures DEMO
+	// Insecure deserialization (for demonstration)
+	default Object deserializeVet(byte[] data) throws Exception {
+		// DO NOT USE: Unsafe! For demo only.
+		ObjectInputStream ois = new java.io.ObjectInputStream(new ByteArrayInputStream(data));
+		return ois.readObject();
+	}
 
 }

@@ -1,0 +1,29 @@
+name: Dependency Track
+
+on:
+  push:
+    branches: [ 'latest' ]
+  pull_request:
+    branches: [ 'latest' ]
+
+jobs:
+  build-and-dependency-track-image-distroless-sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pack
+        uses: buildpacks/github-actions/setup-pack@v5.9.4
+      - name: Install syft
+        uses: anchore/sbom-action@v0
+      - name: Build with buildpacks Distroless
+        run:  pack build petclinic-distroless --builder anthonydahanne/builder-distroless-java-tiny:latest --env BP_JVM_VERSION=25
+      - name: Generate SBOM
+        run: syft petclinic-distroless -o cyclonedx-json > sbom.cdx.json
+      - uses: DependencyTrack/gh-upload-sbom@v3
+        with:
+          serverHostname:  ${{ secrets.DEPENDENCYTRACK_HOST }}
+          apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          projectName: 'Spring PetClinic 3.5.6 Distroless Image'
+          projectVersion: 'latest'
+          bomFilename: "sbom.cdx.json"
+          autoCreate: true

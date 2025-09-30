@@ -4,6 +4,9 @@
     "config:recommended"
   ],
   "ignoreUnstable": false,
+  "branchConcurrentLimit": 100,
+  "prConcurrentLimit": 100,
+  "prHourlyLimit": 100,
   "packageRules": [
     {
       "matchPackagePatterns": ["^org\\.springframework\\.boot"],

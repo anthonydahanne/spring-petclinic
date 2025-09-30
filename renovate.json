@@ -2,5 +2,19 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
-  ]
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["org.springframework.boot"],
+      "matchUpdateTypes": ["major"],
+      "allowedVersions": "^4.0.0-M3",
+      "rangeStrategy": "replace",
+      "prCreation": "immediate",
+      "recreateClosed": true,
+      "prPriority": 1,
+      "prConcurrentLimit": 1,
+      "branchName": "renovate/spring-boot-4"
+    }
+  ],
+  "baseBranches": ["sb-3.5"]
 }

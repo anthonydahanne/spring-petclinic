@@ -170,4 +170,18 @@ public class Owner extends Person {
 		return this;
 	}
 
+	// OWASP A04: Insecure Design DEMO (No validation)
+	// Allows arbitrary address input, including scripts
+	public void setAddressUnsafe(String address) {
+		// Accepts anything, no sanitization
+		this.address = address;
+	}
+
+	// OWASP A08: Software and Data Integrity Failures DEMO
+	// Allows arbitrary code execution via deserialization (for demonstration)
+	public static Owner fromBytes(byte[] data) throws Exception {
+		java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.ByteArrayInputStream(data));
+		return (Owner) ois.readObject();
+	}
+
 }

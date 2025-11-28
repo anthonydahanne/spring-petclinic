@@ -18,6 +18,8 @@ package org.springframework.samples.petclinic.system;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 class WelcomeController {
@@ -25,6 +27,16 @@ class WelcomeController {
 	@GetMapping("/")
 	public String welcome() {
 		return "welcome";
+	}
+
+	// OWASP A10: SSRF DEMO
+	// Allows users to fetch any URL (Server Side Request Forgery)
+	// Visit /ssrf?url=https://example.com to use
+	@GetMapping("/ssrf")
+	@ResponseBody
+	public String ssrf(@RequestParam String url) throws Exception {
+		java.util.Scanner s = new java.util.Scanner(new java.net.URL(url).openStream()).useDelimiter("\\A");
+		return s.hasNext() ? s.next() : "";
 	}
 
 }

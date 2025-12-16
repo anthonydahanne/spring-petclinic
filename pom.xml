@@ -233,6 +233,25 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <imageBuilder>paketobuildpacks/builder-noble-java-tiny:latest</imageBuilder>
+          <image>
+            <env>
+              <BP_JVM_VERSION>25</BP_JVM_VERSION>
+              <BP_JVM_AOTCACHE_ENABLED>true</BP_JVM_AOTCACHE_ENABLED>
+            </env>
+            <buildpacks>
+              <buildpack>urn:cnb:builder:paketo-buildpacks/ca-certificates</buildpack>
+              <buildpack>urn:cnb:builder:paketo-buildpacks/bellsoft-liberica</buildpack>
+              <buildpack>urn:cnb:builder:paketo-buildpacks/syft</buildpack>
+              <buildpack>urn:cnb:builder:paketo-buildpacks/executable-jar</buildpack>
+              <buildpack>paketobuildpacks/spring-boot:anthony-pr-571</buildpack>
+            </buildpacks>
+          </image>
+          <layers>
+            <enabled>true</enabled>
+          </layers>
+        </configuration>
         <executions>
           <execution>
             <!-- Spring Boot Actuator displays build-related information

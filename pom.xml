@@ -407,5 +407,24 @@
         </pluginManagement>
       </build>
     </profile>
+    <profile>
+      <id>main</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <imageBuilder>paketobuildpacks/builder-noble-java-tiny:latest</imageBuilder>
+              <image>
+                <env>
+                  <BP_JVM_VERSION>25</BP_JVM_VERSION>
+                </env>
+              </image>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>

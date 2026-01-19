@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install pack
-        uses: buildpacks/github-actions/setup-pack@v5.9.4
+        uses: buildpacks/github-actions/setup-pack@v5.10.1
       - name: Install syft
         uses: anchore/sbom-action@v0
       - name: Build with buildpacks Distroless

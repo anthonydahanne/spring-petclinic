@@ -2,9 +2,9 @@ name: Dependency Track
 
 on:
   push:
-    branches: [ 'latest' ]
+    branches: [ 'sb-3.5' ]
   pull_request:
-    branches: [ 'latest' ]
+    branches: [ 'sb-3.5' ]
 
 jobs:
   build-and-dependency-track-image-distroless-sbom:
@@ -23,7 +23,7 @@ jobs:
         with:
           serverHostname:  ${{ secrets.DEPENDENCYTRACK_HOST }}
           apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          projectName: 'Spring PetClinic 3.5.6 Distroless Image'
+          projectName: 'Spring PetClinic 3.5 Distroless Image'
           projectVersion: 'latest'
           bomFilename: "sbom.cdx.json"
           autoCreate: true

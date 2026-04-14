@@ -464,5 +464,26 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>unpack</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <imageBuilder>paketobuildpacks/ubuntu-noble-builder:latest</imageBuilder>
+              <image>
+                <env>
+                  <BP_JVM_VERSION>25</BP_JVM_VERSION>
+                  <BP_SPRING_CLOUD_BINDINGS_DISABLED>true</BP_SPRING_CLOUD_BINDINGS_DISABLED>
+                  <BP_UNPACK_LAYOUT_ONLY>true</BP_UNPACK_LAYOUT_ONLY>
+                </env>
+              </image>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>

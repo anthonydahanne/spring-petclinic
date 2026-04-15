@@ -524,10 +524,6 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.graalvm.buildtools</groupId>
-            <artifactId>native-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
             <executions>
@@ -539,14 +535,13 @@
               </execution>
             </executions>
             <configuration>
+              <imageBuilder>paketobuildpacks/builder-noble-java-tiny:latest</imageBuilder>
               <image>
-                <builder>paketobuildpacks/builder-noble-java-tiny:latest</builder>
-                <buildpacks>
-                  <buildpack>paketobuildpacks/java-native-image</buildpack>
-                </buildpacks>
+                <name>petclinic:native</name>
                 <env>
                   <BP_JVM_VERSION>25</BP_JVM_VERSION>
                   <BP_SPRING_CLOUD_BINDINGS_DISABLED>true</BP_SPRING_CLOUD_BINDINGS_DISABLED>
+                  <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
                 </env>
               </image>
             </configuration>

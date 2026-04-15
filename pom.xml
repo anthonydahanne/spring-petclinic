@@ -426,6 +426,7 @@
             <configuration>
               <imageBuilder>paketobuildpacks/builder-noble-java-tiny:latest</imageBuilder>
               <image>
+                <name>${project.name}:main</name>
                 <env>
                   <BP_JVM_VERSION>25</BP_JVM_VERSION>
                 </env>
@@ -453,6 +454,7 @@
             <configuration>
               <imageBuilder>paketobuildpacks/builder-noble-java-tiny:latest</imageBuilder>
               <image>
+                <name>${project.name}:aot</name>
                 <env>
                   <BP_JVM_VERSION>25</BP_JVM_VERSION>
                   <BP_SPRING_CLOUD_BINDINGS_DISABLED>true</BP_SPRING_CLOUD_BINDINGS_DISABLED>
@@ -474,6 +476,7 @@
             <configuration>
               <imageBuilder>paketobuildpacks/ubuntu-noble-builder:latest</imageBuilder>
               <image>
+                <name>${project.name}:unpack</name>
                 <env>
                   <BP_JVM_VERSION>25</BP_JVM_VERSION>
                   <BP_SPRING_CLOUD_BINDINGS_DISABLED>true</BP_SPRING_CLOUD_BINDINGS_DISABLED>
@@ -504,6 +507,7 @@
               <imageBuilder>paketobuildpacks/builder-noble-java-tiny:latest</imageBuilder>
               <image>
                 <env>
+                  <name>${project.name}:aot-cache</name>
                   <BP_JVM_VERSION>25</BP_JVM_VERSION>
                   <BP_SPRING_CLOUD_BINDINGS_DISABLED>true</BP_SPRING_CLOUD_BINDINGS_DISABLED>
                   <BP_SPRING_AOT_ENABLED>true</BP_SPRING_AOT_ENABLED>

@@ -19,7 +19,7 @@ jobs:
         run:  pack build petclinic-distroless --builder anthonydahanne/builder-distroless-java-tiny:latest --env BP_JVM_VERSION=25
       - name: Generate SBOM
         run: syft petclinic-distroless -o cyclonedx-json > sbom.cdx.json
-      - uses: DependencyTrack/gh-upload-sbom@v3
+      - uses: DependencyTrack/gh-upload-sbom@v4
         with:
           serverHostname:  ${{ secrets.DEPENDENCYTRACK_HOST }}
           apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
